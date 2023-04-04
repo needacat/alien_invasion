@@ -11,3 +11,8 @@ class Settings:
         self.bullet_color = 120, 50, 103
         self.bullet_speed = 0.8
         self.bullet_attack_interval = 0.1
+        # 敌人相关配置
+        self.enemy_speed = 0.3
+        self.fleet_drop_speed = 10
+        ## -1为左，1为右
+        self.fleet_direction = 1

@@ -78,6 +78,28 @@ def create_fleet(settings, screen, ship, enemys):
 
 
 def get_number_rows(settings, ship_height, enemy_height):
-    available_space_y = (settings.screen_height - (3 * enemy_height) - ship_height)
+    available_space_y = (settings.screen_height - (8 * enemy_height) - ship_height)
     number_rows = int(available_space_y / (2 * enemy_height))
     return number_rows
+
+
+def update_enemys(enemys):
+    enemys.update()
+
+
+def change_fleet_direction(settings, enemys):
+    for enemy in enemys.sprites():
+        enemy.rect.y += settings.fleet_drop_speed
+    settings.fleet_direction *= -1
+
+
+def check_fleet_edges(settings, enemys):
+    for enemy in enemys.sprites():
+        if enemy.check_edge():
+            change_fleet_direction(settings, enemys)
+            break
+
+
+def update_enemys(settings, enemys):
+    check_fleet_edges(settings, enemys)
+    enemys.update()

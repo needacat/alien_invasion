@@ -1,6 +1,5 @@
 from settings import Settings
 from ship import Ship
-from enemy import Enemy
 from game_functions import *
 from pygame.sprite import Group
 
@@ -22,6 +21,8 @@ def run_game():
         check_events(ship, settings, bullets, screen)
         ship.update()
         bullets.update(bullets)
+        update_enemys(settings, enemys)
+        enemys.update()
 
         update_screen(settings, screen, ship, enemys, bullets)
 
