@@ -20,8 +20,9 @@ def run_game():
     while True:
         check_events(ship, settings, bullets, screen)
         ship.update()
-        bullets.update(bullets)
-        update_enemys(settings, enemys)
+        # bullets.update(bullets)
+        update_bullets(settings, screen, ship, bullets, enemys)
+        update_enemys(settings, ship, enemys)
         enemys.update()
 
         update_screen(settings, screen, ship, enemys, bullets)

@@ -53,6 +53,23 @@ def update_screen(ai_settings, screen, ship, enemys, bullets):
     pygame.display.flip()
 
 
+def update_bullets(settings, screen, ship, bullets, enemys):
+    bullets.update(bullets)
+    check_bullet_alien_collisions(settings, screen, ship, enemys, bullets)
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
+
+
+def check_bullet_alien_collisions(settings, screen, ship, enemys, bullets):
+    """子弹击中检测/处理"""
+    collisions = pygame.sprite.groupcollide(bullets, enemys, True, True)
+    if (len(enemys)) == 0:
+        # 删除现有的所有子弹，并创建一个新的外星人群
+        bullets.empty()
+        create_fleet(settings, screen, ship, enemys)
+
+
 def get_number_enemys_x(settings, enemy_width):
     available_space_x = settings.screen_width - 2 * enemy_width
     number_enemys_x = int(available_space_x / (2 * enemy_width))
@@ -83,10 +100,6 @@ def get_number_rows(settings, ship_height, enemy_height):
     return number_rows
 
 
-def update_enemys(enemys):
-    enemys.update()
-
-
 def change_fleet_direction(settings, enemys):
     for enemy in enemys.sprites():
         enemy.rect.y += settings.fleet_drop_speed
@@ -100,6 +113,9 @@ def check_fleet_edges(settings, enemys):
             break
 
 
-def update_enemys(settings, enemys):
+def update_enemys(settings, ship, enemys):
     check_fleet_edges(settings, enemys)
     enemys.update()
+    # 检测飞船与敌人的碰撞
+    if pygame.sprite.spritecollideany(ship, enemys):
+        print("DIE!")
