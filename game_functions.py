@@ -1,4 +1,6 @@
 import sys
+import time
+
 import pygame
 from bullet import Bullet
 from enemy import Enemy
@@ -113,9 +115,30 @@ def check_fleet_edges(settings, enemys):
             break
 
 
-def update_enemys(settings, ship, enemys):
+def ship_hit(settings, stats, screen, ship, enemys, bullets):
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
+        enemys.empty()
+        bullets.empty()
+        create_fleet(settings, screen, ship, enemys)
+        ship.center_ship()
+        time.sleep(0.3)
+    else:
+        stats.game_active = False
+
+
+def check_enemys_bottom(settings, stats, screen, ship, enemys, bullets):
+    screen_rect = screen.get_rect()
+    for enemy in enemys.sprites():
+        if enemy.rect.bottom >= screen_rect.bottom:
+            ship_hit(settings, stats, screen, ship, enemys, bullets)
+            break
+
+
+def update_enemys(settings, stats, screen, ship, enemys, bullets):
     check_fleet_edges(settings, enemys)
+    check_enemys_bottom(settings, stats, screen, ship, enemys, bullets)
     enemys.update()
     # 检测飞船与敌人的碰撞
     if pygame.sprite.spritecollideany(ship, enemys):
-        print("DIE!")
+        ship_hit(settings, stats, screen, ship, enemys, bullets)

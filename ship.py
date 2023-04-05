@@ -4,6 +4,7 @@ import pygame
 class Ship:
     def __init__(self, screen, settings):
         """初始化飞船相关参数"""
+        self.center = None
         self.screen = screen
         # 加载飞船图像并获取外接矩形
         self.image = pygame.image.load('resource/ship.bmp')
@@ -11,7 +12,7 @@ class Ship:
         self.screen_rect = screen.get_rect()
         # 将每艘新飞船放在屏幕底部中央
         self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
+        self.rect.centery = self.screen_rect.bottom - self.rect.height
         # 飞船移动标志
         self.moving_up = False
         self.moving_down = False
@@ -42,3 +43,8 @@ class Ship:
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
+
+    def center_ship(self):
+        """让飞船恢复初始位置"""
+        self.f_center_x = self.screen_rect.centerx
+        self.f_center_y = self.screen_rect.bottom - self.rect.height
